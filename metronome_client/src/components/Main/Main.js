@@ -40,11 +40,6 @@ const Main = (props) => {
 
   return (
     <MainContainer>
-
-
-      <p className="text-3xl font-bold underline">
-            Hello world 2
-      </p>
       <Row>
         <Label htmlFor="roomName">Invitee name</Label>
         <Input type="text" id="roomName" ref={roomRef} />

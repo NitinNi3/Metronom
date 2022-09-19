@@ -1,21 +1,21 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const PORT = process.env.PORT || 3001;
+const io = require('socket.io')(http,{path: '/jamsocket'});
+const PORT = process.env.PORT || 4001;
 const path = require('path');
 
 let socketList = {};
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '../client/build')));
 
-  app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
-  });
-}
+//   app.get('/*', function (req, res) {
+//     res.sendFile(path.join(__dirname, '../client/build/index.html'));
+//   });
+// }
 
 // Route
 app.get('/ping', (req, res) => {
@@ -134,5 +134,5 @@ io.on('connection', (socket) => {
 });
 
 http.listen(PORT, () => {
-  console.log('Connected : 3001');
+  console.log(`Connected : ${PORT}`);
 });
