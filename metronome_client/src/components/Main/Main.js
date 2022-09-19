@@ -43,7 +43,7 @@ const Main = (props) => {
 
 
       <p className="text-3xl font-bold underline">
-            Hello world!
+            Hello world 2
       </p>
       <Row>
         <Label htmlFor="roomName">Invitee name</Label>
