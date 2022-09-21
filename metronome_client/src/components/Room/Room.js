@@ -18,12 +18,12 @@ const Room = (props) => {
   // nc
   const [audioDevices, setAudioDevices] = useState([]);
   const [selectedAudioDeviceId, setSelectedAudioDeviceId] = useState(0);
+  const [showAudioDevices, setShowAudioDevices] = useState(false);
 
   const [displayChat, setDisplayChat] = useState(false);
   const [screenShare, setScreenShare] = useState(false);
   const [showVideoDevices, setShowVideoDevices] = useState(false);
-  // nc
-  const [showAudioDevices, setShowAudioDevices] = useState(false);
+  
 
   const peersRef = useRef([]);
   const userVideoRef = useRef();
@@ -447,7 +447,7 @@ const Room = (props) => {
     }
   };
 
-  // nitin change
+  // nc
   const clickAudioDevice = (event) => {
     setUserVideoAudio((preList) => {
       let videoSwitch = preList['localUser'].video;
@@ -490,6 +490,43 @@ const Room = (props) => {
         });
     }
   };
+
+  // nc update clickAudioDevice function with below ut not in use here
+  const switchAudioSource = (audioDeviceId) => {
+
+    setSelectedAudioDeviceId(audioDeviceId)
+    const enabledAudio = userVideoRef.current.srcObject.getAudioTracks()[0].enabled;
+
+    navigator.mediaDevices
+        .getUserMedia({audio: { audioDeviceId,enabledAudio }})
+        .then((stream) => {
+          
+          const newStreamTrack = stream.getTracks().find((track) => track.kind === 'audio');
+          
+          const oldStreamTrack = userStream.current
+            .getTracks()
+            .find((track) => track.kind === 'audio');
+
+          userStream.current.removeTrack(oldStreamTrack);
+          userStream.current.addTrack(newStreamTrack);
+          
+
+          peersRef.current.forEach(({ peer }) => {
+            // replaceTrack (oldTrack, newTrack, oldStream);
+            peer.replaceTrack(
+              oldStreamTrack,
+              newStreamTrack,
+              userStream.current
+            );
+            
+          });
+        }).catch((error)=>{
+          console.log(error)
+        });
+
+
+
+  }
 
   return (
     <RoomContainer onClick={clickBackground}>

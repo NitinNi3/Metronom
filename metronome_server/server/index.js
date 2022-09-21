@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4001;
 const path = require('path');
 
 let socketList = {};
@@ -134,5 +134,5 @@ io.on('connection', (socket) => {
 });
 
 http.listen(PORT, () => {
-  console.log('Connected : 3001');
+  console.log('Connected : 4001');
 });
